@@ -26,3 +26,5 @@ nuspec = open("template.nuspec", encoding="utf-8").read().replace("VERSIONPLACEH
 
 with open("tshock.nuspec", "w") as f:
     f.write(nuspec)
+
+print("TShock version: " + lj[0]["tag_name"])

@@ -22,3 +22,8 @@ jobs:
         python prepare.py
         nuget pack tshock.nuspec -OutputFileNamesWithoutVersion
         nuget push TerrariaServer.TShock.nupkg -Source nuget.org -ApiKey $env:ApiKey
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: TerrariaServer.TShock.nupkg
+        path: TerrariaServer.TShock.nupkg

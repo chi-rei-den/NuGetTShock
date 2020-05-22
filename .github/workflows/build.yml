@@ -1,0 +1,24 @@
+name: GitHub CI
+on: push
+
+jobs:
+  build:
+    name: Build
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        submodules: recursive
+
+    - name: Install NuGet
+      run: choco install nuget.commandline
+
+    - name: Build
+      env:
+        ApiKey: ${{ secrets.ApiKey }}
+      shell: pwsh
+      run: |
+        python prepare.py
+        nuget pack tshock.nuspec -OutputFileNamesWithoutVersion
+        nuget push TerrariaServer.TShock.nupkg -Source nuget.org -ApiKey $env:ApiKey

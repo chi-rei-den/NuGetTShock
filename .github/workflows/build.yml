@@ -11,17 +11,17 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Install NuGet
-      run: choco install nuget.commandline
+    - uses: nuget/setup-nuget@v1
+      with:
+        nuget-api-key: ${{ secrets.ApiKey }}
+        nuget-version: '5.x'
 
     - name: Build
-      env:
-        ApiKey: ${{ secrets.ApiKey }}
       shell: pwsh
       run: |
         python prepare.py
         nuget pack tshock.nuspec -OutputFileNamesWithoutVersion
-        nuget push TerrariaServer.TShock.nupkg -Source nuget.org -ApiKey $env:ApiKey
+        nuget push TerrariaServer.TShock.nupkg -Source nuget.org
 
     - uses: actions/upload-artifact@v1
       with:

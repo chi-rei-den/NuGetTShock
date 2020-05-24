@@ -3,6 +3,7 @@ import json
 import zipfile
 import os
 import shutil
+from xml.sax.saxutils import escape
 
 urllib.request.urlretrieve("https://api.github.com/repos/Pryaxis/TShock/releases", "gh.json")
 lj = json.loads(open("gh.json", encoding="utf-8").read())
@@ -22,9 +23,13 @@ for subdir, dirs, files in os.walk("target"):
             if file not in excludes:
                 shutil.copy(filepath, "binary" + os.sep + file)
 
-nuspec = open("template.nuspec", encoding="utf-8").read().replace("VERSIONPLACEHOLDER", lj[0]["tag_name"].lstrip("v")).replace("NAMEPLACEHOLDER", lj[0]["name"])
+nuspec = open("template.nuspec", encoding="utf-8").read()\
+             .replace("VERSIONPLACEHOLDER", lj[0]["tag_name"].lstrip("v"))\
+             .replace("NAMEPLACEHOLDER", escape(lj[0]["name"] + "\r\n\r\n" + lj[0]["body"]))
 
 with open("tshock.nuspec", "w") as f:
     f.write(nuspec)
 
-print("TShock version: " + lj[0]["tag_name"])
+print("Tag: " + lj[0]["tag_name"])
+print("Name: " + lj[0]["name"])
+print("Body: " + lj[0]["body"])

@@ -3,6 +3,8 @@ import json
 import zipfile
 import os
 import shutil
+import re
+import datetime
 from xml.sax.saxutils import escape
 
 urllib.request.urlretrieve("https://api.github.com/repos/Pryaxis/TShock/releases", "gh.json")
@@ -23,8 +25,11 @@ for subdir, dirs, files in os.walk("target"):
             if file not in excludes:
                 shutil.copy(filepath, "binary" + os.sep + file)
 
+# (?P<xx>) is python style named group capture
+ver = re.match("(?:v)?(?P<version>(?P<major>\d+)(\.(?P<minor>\d+))?(\.(?P<patch>\d+))?)(?P<suffix>-.*)?", lj[0]["tag_name"])
+verstr = f"{ver.group('major')}.{ver.group('minor') or 0}.{ver.group('patch') or 0}.{datetime.date.strftime(datetime.datetime.now(), '%Y%d%m')}{ver.group('suffix') or ''}"
 nuspec = open("template.nuspec", encoding="utf-8").read()\
-             .replace("VERSIONPLACEHOLDER", lj[0]["tag_name"].lstrip("v"))\
+             .replace("VERSIONPLACEHOLDER", verstr)\
              .replace("NAMEPLACEHOLDER", escape(lj[0]["name"] + "\r\n\r\n" + lj[0]["body"]))
 
 with open("tshock.nuspec", "w") as f:

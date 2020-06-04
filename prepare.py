@@ -25,10 +25,13 @@ for subdir, dirs, files in os.walk("target"):
 
 nuspec = open("template.nuspec", encoding="utf-8").read()\
              .replace("VERSIONPLACEHOLDER", lj[0]["tag_name"].lstrip("v"))\
-             .replace("NAMEPLACEHOLDER", escape(lj[0]["name"] + "\r\n\r\n" + lj[0]["body"]))
+             .replace("NAMEPLACEHOLDER", escape(lj[0]["name"]))
 
 with open("tshock.nuspec", "w") as f:
     f.write(nuspec)
+
+with open("body.md", "w") as f:
+    f.write(lj[0]["body"])
 
 print("Tag: " + lj[0]["tag_name"])
 print("Name: " + lj[0]["name"])

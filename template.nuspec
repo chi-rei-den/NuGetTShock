@@ -4,6 +4,7 @@
     <id>TerrariaServer.TShock</id>
     <version>VERSIONPLACEHOLDER</version>
     <authors>Pryaxis &amp; TShock Contributors</authors>
+    <readme>readme.md</readme>
     <owners>TShock Team</owners>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <projectUrl>https://github.com/Pryaxis/TShock</projectUrl>
@@ -20,7 +21,6 @@ This package was uploaded from CI service by SGKoishi, NOT official TShock Team.
       </group>
     </dependencies>
   </metadata>
-  <readme>readme.md</readme>
   <files>
     <file src="binary\*.*" target="lib\net452" />
     <file src="body.md" target="readme.md" />

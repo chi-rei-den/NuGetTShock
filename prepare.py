@@ -27,7 +27,10 @@ for subdir, dirs, files in os.walk("target"):
 
 # (?P<xx>) is python style named group capture
 ver = re.match("(?:v)?(?P<version>(?P<major>\d+)(\.(?P<minor>\d+))?(\.(?P<patch>\d+))?)(?P<suffix>-.*)?", lj[0]["tag_name"])
-verstr = f"{ver.group('major')}.{ver.group('minor') or 0}.{ver.group('patch') or 0}.{datetime.date.strftime(datetime.datetime.now(), '%Y%m%d')}{ver.group('suffix') or ''}"
+verstr = f"{ver.group('major')}.{ver.group('minor') or 0}.{ver.group('patch') or 0}"
+if len(ver.group('suffix') or '') > 0:
+    verstr += f".{datetime.date.strftime(datetime.datetime.now(), '%Y%m%d')}{ver.group('suffix') or ''}"
+
 nuspec = open("template.nuspec", encoding="utf-8").read()\
              .replace("VERSIONPLACEHOLDER", verstr)\
              .replace("NAMEPLACEHOLDER", escape(lj[0]["name"] + "\r\n\r\n" + lj[0]["body"]))
